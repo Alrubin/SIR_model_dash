@@ -29,6 +29,7 @@
 ######################################################################################################################################################################
 
 #dash visualization 
+import dash
 from dash import Dash, dcc, html
 from dash.dependencies import Input, Output, State
 import dash_bootstrap_components as dbc
@@ -133,7 +134,7 @@ def Navbar():
                 dbc.ModalBody("""L'accesso a questa dashboard è gratuito perchè sono profondamente convinto che la cultura non abbia prezzo.
                 Tuttavia, sviluppare e mantenere il codice per garantire un servizio sempre aggiornato è un lavoro importante. 
                 Se hai apprezzato questo strumento, considera una donazione per supportarmi."""),
-                dbc.ModalFooter(dbc.Button("Paypal", id = "paypal", className="ml-auto",color = "warning", href='https://paypal.me/alessandrorubin1'))
+                dbc.ModalFooter(dbc.Button("Paypal", id = "paypal", className="ml-auto",color = "warning", href='https://paypal.me/alessandrorubin1', target="_blank"))
                 ],id="modal",is_open=False,size = "lg"),
         ])
 
@@ -141,8 +142,7 @@ def Navbar():
     nav_links = dbc.Nav([dbc.NavItem(dbc.NavLink(),class_name="me-auto",), # add an auto margin        
                     dbc.NavItem(dbc.NavLink("Home", class_name="ms-2", href= "/home")),
                     dbc.NavItem(dbc.NavLink("Documentazione", class_name="ms-2", href ="/documentazione")),
-                    dbc.NavItem(dbc.NavLink("Scenario", href = "/scenario")),
-                    dbc.NavItem(dbc.NavLink("Github")),
+                    dbc.NavItem(dbc.NavLink("Github", class_name="ms-2", href = "https://github.com/Alrubin/SIR_model_dash", target="_blank")),
                     donate
                     ],
                     # make sure nav takes up the full width for auto margin to get applied
@@ -165,19 +165,6 @@ def Navbar():
 
     return navbar
 
-######################################################################################################################################################################
-# 4 - PAGINA HOME
-######################################################################################################################################################################
-def Home():
-
-    # corpo centrale pagina
-    body_home = html.Label("Home Page")
-    
-    # Creazione della pagina HOME
-    home_page = html.Div([ Navbar(),  body_home  ])
-
-    return home_page
-
 
 ######################################################################################################################################################################
 # 5 - PAGINA DOCUMENTAZIONE
@@ -186,7 +173,7 @@ def Home():
 def Documentazione():
 
     # corpo centrale pagina
-    body_home = html.Label("Documentazione Page")
+    body_home = html.H2("Page under construction")
     
     # Creazione della pagina HOME
     doc_page = html.Div([ Navbar(),  body_home  ])
@@ -194,7 +181,7 @@ def Documentazione():
     return doc_page
 
 ######################################################################################################################################################################
-# 6 - PAGINA SCENARIO
+# 6 - PAGINA HOME
 ######################################################################################################################################################################
 
 #=============================================================================================
@@ -225,7 +212,7 @@ def Control_Panel():
                     
                     dbc.Row([dbc.Label("Popolazione:", width=7), dbc.Col(dbc.Input(id="popolazione", type="number", value=90000, size="sm"), width=5),],class_name="mb-3",),
     
-                    dbc.Row([dbc.Label("Infetti:", width=7),dbc.Col(dbc.Input(id="infetti_iniz", type="number", value=0, size="sm"),width=5),], class_name="mb-3",), 
+                    dbc.Row([dbc.Label("Infetti:", width=7),dbc.Col(dbc.Input(id="infetti_iniz", type="number", value=1, size="sm"),width=5),], class_name="mb-3",), 
             
                     dbc.Row([dbc.Label("Rimossi:", width=7), dbc.Col(dbc.Input(id="rimossi_iniz", type="number", value=0, size="sm"),  width=5), ],  class_name="mb-3",),
                                        
@@ -371,11 +358,11 @@ def central_graph():
 #=============================================================================================
 # COSTRUZIONE DELLA PAGINA
 #=============================================================================================
-def Scenario():    
+def Home():    
     
-    scenario_page = html.Div([dcc.Store(id='side_click'),  Navbar(),  Control_Panel(), Right_Bar(), central_graph()])
+    home_page = html.Div([dcc.Store(id='side_click'),  Navbar(),  Control_Panel(), Right_Bar(), central_graph()])
 
-    return scenario_page
+    return home_page
 
 
 
@@ -711,8 +698,6 @@ app.layout =  html.Div([
 def display_page(path):
     if path == "/home":
         return Home()
-    elif path == "/scenario":
-        return Scenario()
     elif path == "/documentazione":
         return Documentazione()
     else:
